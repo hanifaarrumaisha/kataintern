@@ -1,0 +1,15 @@
+var express = require('express');
+var app = express();
+var socket = require('socket.io');
+io = socket(server);
+
+io.on('connection', (socket) => {
+    console.log(socket.id + 'is connected');
+    socket.on('disconnect', function(){
+        console.log(socket.id + 'disconnected');
+    });
+});
+
+server = app.listen(8080, function(){
+    console.log('server is running on port 8080')
+});
