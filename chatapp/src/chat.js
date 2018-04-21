@@ -1,6 +1,16 @@
 import React from "react";
 
 class Chat extends React.Component{
+    constructor(props){
+        super(props);
+
+        this.state = {
+            username: '',
+            message: '',
+            messages: []
+        };
+    }
+
     render(){
         return (
             <div className="container">
@@ -8,10 +18,14 @@ class Chat extends React.Component{
                     <div className="col-4">
                         <div className="card">
                             <div className="card-body">
-                                <div className="card-title">Global Chat</div>
+                                <div className="card-title">Kata.ai Internship</div>
                                 <hr/>
                                 <div className="messages">
-                                    
+                                    {this.state.messages.map(message => {
+                                        return (
+                                            <div>{message.author}: {message.message}</div>
+                                        )
+                                    })}
                                 </div>
                             </div>
                             <div className="card-footer">
