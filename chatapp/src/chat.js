@@ -18,7 +18,7 @@ class Chat extends React.Component{
         });
 
         const addMessage = data => {
-            console.log('coba'+data.message);
+            console.log(data.message);
             this.setState({messages: [...this.state.messages, data]});
             console.log(this.state.messages);
         };
@@ -26,6 +26,7 @@ class Chat extends React.Component{
         this.sendMessage = ev => {
             ev.preventDefault();
             this.socket.emit('SEND_MESSAGE', {
+                type: "text",
                 author: this.state.username,
                 message: this.state.message
             })
@@ -44,7 +45,7 @@ class Chat extends React.Component{
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-4">
+                    <div className="col-12">
                         <div className="card">
                             <div className="card-body">
                                 <div className="card-title">Kata.ai Internship</div>
@@ -53,13 +54,15 @@ class Chat extends React.Component{
                                     {this.state.messages.map((message) => <Message key={message.id} {...message} />)}
                                 </div>
                             </div>
-                            <div className="card-footer">
-                                    <input type="text" placeholder="Username" className="form-control"/>
-                                    <br/>
-                                    <input type="text" placeholder="Message" className="form-control"/>
-                                    <br/>
-                                    <button onClick={this.sendMessage} className="btn btn-primary form-control">Send</button>
-                            </div>
+                            <form onSubmit={this.sendMessage} className="card-footer">
+                                <input type="text" value={this.state.username} onChange={(event)=> this.setState({username:event.target.value})}
+                                placeholder="username" className="form-control"/>
+                                <br/>
+                                <input type="text" value={this.state.message} onChange={(event) => this.setState({message:event.target.value})}
+                                placeholder="message" className="form-control"/>
+                                <br/>
+                                <button type="submit" className="btn btn-primary form-control">Send</button>
+                            </form>
                         </div>
                     </div>
                 </div>
