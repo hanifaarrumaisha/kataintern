@@ -7,7 +7,7 @@ class Chat extends React.Component{
 
         this.state = {
             username: '',
-            message: '',
+            context: '',
             messages: []
         };
 
@@ -17,28 +17,33 @@ class Chat extends React.Component{
             addMessage(data);
         });
 
-        const addMessage = data => {
-            console.log(data.message);
+        const addMessage = (data) => {
+            console.log(data.context);
             this.setState({messages: [...this.state.messages, data]});
             console.log(this.state.messages);
         };
 
-        this.sendMessage = ev => {
+        this.sendMessage = (ev) => {
             ev.preventDefault();
             this.socket.emit('SEND_MESSAGE', {
                 type: "text",
                 author: this.state.username,
-                message: this.state.message
+                context: this.state.context
             })
             this.setState({message: ''});
         }
 
+        this.socket.on('SEND_BROADCAST', (data)=>{
+            console.log('broadcast')
+            console.log(data)
+            addMessage(data)
+        })
     }
 
     render(){
         let Message = (props)=>{
             return (
-                <div>{props.author}: {props.message}</div>
+                <div>{props.author}: {props.context}</div>
             )
         }
         
@@ -58,7 +63,7 @@ class Chat extends React.Component{
                                 <input type="text" value={this.state.username} onChange={(event)=> this.setState({username:event.target.value})}
                                 placeholder="username" className="form-control"/>
                                 <br/>
-                                <input type="text" value={this.state.message} onChange={(event) => this.setState({message:event.target.value})}
+                                <input type="text" value={this.state.context} onChange={(event) => this.setState({context:event.target.value})}
                                 placeholder="message" className="form-control"/>
                                 <br/>
                                 <button type="submit" className="btn btn-primary form-control">Send</button>
